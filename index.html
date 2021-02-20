@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>词云图</title>
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5/dist/echarts.min.js"></script>
+    <script src="echarts-wordcloud.js"></script>
+    <script src="jquery-3.4.1.min.js"></script>
+    <style>
+        html, body, #main {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+    <div id="main"></div>
+    <script>
+        var chart = echarts.init(document.getElementById('main'));
+
+        var option = {
+            tooltip: {},
+
+            series: [{
+                type: 'wordCloud',
+                gridSize: 2,
+                sizeRange: [12, 50],
+                rotationRange: [-90, 90],
+                shape: 'pentagon',
+                drawOutOfBound: true,
+
+                textStyle: {
+                    color: function () {
+                        return 'rgb(' + [
+                            Math.round(Math.random() * 160),
+                            Math.round(Math.random() * 160),
+                            Math.round(Math.random() * 160)
+                        ].join(',') + ')';
+                    }
+                },
+
+                emphasis: {
+                    textStyle: {
+                        shadowBlur: 10,
+                        shadowColor: '#333'
+                    }
+                },
+
+                data: []
+
+            }]
+
+        };
+
+        $.ajax({
+            type: "get",
+            url: "comments.json",
+            dataType: "json",
+
+            success: function(data) {
+                console.info(data);
+                var datalist = [];
+                for (var i = 0; i < data.length; i++) {
+                    datalist.push({
+                    name: data[i].name,
+                    value: Number(data[i].value)
+                })
+                }
+                chart.setOption({
+                series: [{
+                    type: 'wordCloud',
+                    data: datalist,
+                }]
+                });
+            },
+
+            error: function(errorMsg) {
+                alert("图表请求数据失败!");
+            }
+
+        });
+
+        chart.setOption(option);
+
+        window.onresize = chart.resize;
+
+    </script>
+</body>
+</html>
