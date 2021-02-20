@@ -1,7 +1,7 @@
 import jieba
 import json
 
-commentList = open('评论.txt', 'r', encoding='utf-8').read()
+commentList = open('comments.txt', 'r', encoding='utf-8').read()
 
 # print(commentList)
 words = jieba.lcut(commentList)
@@ -26,5 +26,5 @@ for i in range(len(items)):
 data = {}
 data['data'] = countList
 print(data)
-with open('comment.json', 'w', encoding='utf-8') as f:
+with open('comments.json', 'w', encoding='utf-8') as f:
     json.dump(data, f, ensure_ascii=False, indent=4)

@@ -36,7 +36,7 @@ for i in range(commentnumber // 10):
 # print(commentlist)
 
 # 将获取的评论写入txt文档
-with open('评论.txt', "a", encoding="utf-8") as f:
+with open('comments.txt', "a", encoding="utf-8") as f:
     for list1 in commentlist:
         for comment in list1:
             f.write(comment)
